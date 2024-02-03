@@ -111,7 +111,7 @@
       .logs > header {
         padding: 6px;
         position: sticky;
-        top: 70px;
+        top: 72px;
         background-color: #fff;
         border-bottom: 1px solid #ccc;
       }
@@ -120,7 +120,7 @@
       }
       .block.step {
         position: sticky;
-        top: 102px;
+        top: 105px;
         background-color: #fff;
         height: 40px;
         overflow: auto;
@@ -211,7 +211,7 @@
               <header>{{item.title}}</header>
               <footer>{{item.desc}}</footer>
             </template>
-            <template v-else-if="item.type==='index'">
+            <template v-else-if="item.type==='index' || item.type==='34'">
               <index-bar :length="fromToMaxLength"></index-bar>
               <mark-bar
                 label="e1"
@@ -231,14 +231,14 @@
                 label="from"
                 :list="fromList"
                 :length="fromToMaxLength"
-                :highlight="(key,idx)=>idx===item.i&&idx===item.e1&&!toList.includes(key)"
+                :highlight="(key,idx)=>item.type==='34' && idx===item.i&&!toList.includes(key)"
                 highlight-color="red"
               ></list-bar>
               <list-bar
                 label="to"
                 :list="toList"
                 :length="fromToMaxLength"
-                :highlight="(key,idx)=>idx===item.i&&idx===item.e2&&!fromList.includes(key)"
+                :highlight="(key,idx)=>item.type==='34' && idx===item.i&&!fromList.includes(key)"
                 highlight-color="green"
               ></list-bar>
               <mark-bar
