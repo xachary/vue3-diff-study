@@ -217,12 +217,14 @@
                 label="e1"
                 :mark="(n)=>item.e1===n-2"
                 :length="fromToMaxLength"
+                mark-color="lavender"
                 marker="↓"
               ></mark-bar>
               <mark-bar
                 label="i"
                 :mark="(n)=>item.i===n-2"
                 :length="fromToMaxLength"
+                mark-color="lavender"
                 marker="↓"
               ></mark-bar>
               <list-bar
@@ -243,12 +245,14 @@
                 label="i"
                 :mark="(n)=>item.i===n-2"
                 :length="fromToMaxLength"
+                mark-color="lavender"
                 marker="↑"
               ></mark-bar>
               <mark-bar
                 label="e2"
                 :mark="(n)=>item.e2===n-2"
                 :length="fromToMaxLength"
+                mark-color="lavender"
                 marker="↑"
               ></mark-bar>
               <dom-bar
@@ -261,41 +265,69 @@
             <template v-else-if="item.type==='unknownSequence'">
               <header>【unknownSequence】</header>
               <index-bar :length="fromToMaxLength"></index-bar>
+              <mark-bar
+                label="e1"
+                :mark="(n)=>item.e1===n-2"
+                :length="fromToMaxLength"
+                mark-color="lavender"
+                marker="↓"
+              ></mark-bar>
+              <mark-bar
+                label="i"
+                :mark="(n)=>item.i===n-2"
+                :length="fromToMaxLength"
+                mark-color="lavender"
+                marker="↓"
+              ></mark-bar>
               <list-bar
                 label="from"
                 :list="fromList"
                 :length="fromToMaxLength"
                 :highlight="(key,idx)=>idx>=item.i&&idx<=item.e1"
-                highlight-color="red"
+                highlight-color="chocolate"
               ></list-bar>
               <list-bar
                 label="to"
                 :list="toList"
                 :length="fromToMaxLength"
                 :highlight="(key,idx)=>idx>=item.i&&idx<=item.e2"
-                highlight-color="red"
+                highlight-color="chocolate"
               ></list-bar>
+              <mark-bar
+                label="i"
+                :mark="(n)=>item.i===n-2"
+                :length="fromToMaxLength"
+                mark-color="lavender"
+                marker="↑"
+              ></mark-bar>
+              <mark-bar
+                label="e2"
+                :mark="(n)=>item.e2===n-2"
+                :length="fromToMaxLength"
+                mark-color="lavender"
+                marker="↑"
+              ></mark-bar>
             </template>
             <template v-else-if="item.type==='keyToNewIndexMap'">
               <header>【keyToNewIndexMap】</header>
               <index-bar
                 :length="fromToMaxLength"
                 :highlight="(n)=>item.keyToNewIndexMap.has(toList[n-1])"
-                highlight-color="red"
+                highlight-color="chocolate"
               ></index-bar>
               <list-bar
                 label="to"
                 :list="toList"
                 :length="fromToMaxLength"
                 :highlight="(key,idx)=>item.keyToNewIndexMap.has(toList[idx])"
-                highlight-color="red"
+                highlight-color="chocolate"
               ></list-bar>
             </template>
             <template v-else-if="item.type==='5.2'">
               <index-bar
                 :length="fromToMaxLength"
                 :highlight="(n)=>n-1>=item.s1&&n-1<=item.e1"
-                highlight-color="red"
+                highlight-color="chocolate"
               ></index-bar>
               <mark-bar
                 label="e1"
@@ -316,14 +348,14 @@
                 :highlight="(key,idx)=>idx===item.i&&item.title.includes('没了')"
                 highlight-color="red"
                 :highlight2="(key,idx)=>idx===item.i"
-                highlight2-color="green"
+                highlight2-color="darkorchid"
               ></list-bar>
               <list-bar
                 label="to"
                 :list="toList"
                 :length="fromToMaxLength"
                 :highlight="(key,idx)=>key===fromList[item.i]"
-                highlight-color="green"
+                highlight-color="darkorchid"
               ></list-bar>
               <header>{{item.title}}</header>
               <dom-bar
@@ -338,23 +370,23 @@
               <index-bar
                 :length="fromToMaxLength"
                 :highlight="(n)=>item.newIndexToOldIndexMap.includes(n)"
-                highlight-color="green"
+                highlight-color="darkorchid"
               ></index-bar>
               <list-bar
                 label="from"
                 :list="fromList"
                 :length="fromToMaxLength"
                 :highlight="(key,idx)=>idx>=item.i&&idx<=item.e1&&item.newIndexToOldIndexMap.includes(idx+1)"
-                highlight-color="green"
+                highlight-color="darkorchid"
                 :highlight2="(key,idx)=>idx>=item.i&&idx<=item.e1"
-                highlight2-color="red"
+                highlight2-color="chocolate"
               ></list-bar>
               <list-bar
                 label="to"
                 :list="toList"
                 :length="fromToMaxLength"
                 :highlight="(key,idx)=>idx>=item.i&&idx<=item.e2"
-                highlight-color="red"
+                highlight-color="chocolate"
               ></list-bar>
               <div>
                 <label>map:</label>
@@ -364,7 +396,7 @@
                     v-for="(key,idx) in toList"
                     :key="idx"
                     :style="{
-                        color:idx>=item.i&&idx<=item.e2?'green':''
+                        color:idx>=item.i&&idx<=item.e2?item.newIndexToOldIndexMap.map(o=>o-1)[idx-item.i]>-1?'darkorchid':'chocolate':''
                       }"
                   >
                     {{idx>=item.i&&idx<=item.e2?item.newIndexToOldIndexMap.map(o=>o-1)[idx-item.i]:''}}
@@ -390,7 +422,7 @@
                     v-for="(key,idx) in item.newIndexToOldIndexMap.map(o=>o-1)"
                     :key="idx"
                     :style="{
-                        color:true?'green':'green'
+                        color:key>-1?'darkorchid':'chocolate'
                       }"
                   >
                     {{key}}
@@ -404,7 +436,7 @@
                     v-for="(key,idx) in item.newIndexToOldIndexMap.map(o=>o-1)"
                     :key="idx"
                     :style="{
-                      color:item.increasingNewIndexSequence.includes(idx)?'red':'green'
+                      color:item.increasingNewIndexSequence.includes(idx)?'darkturquoise':''
                     }"
                   >
                     {{item.increasingNewIndexSequence.includes(idx)?idx:''}}
@@ -425,9 +457,42 @@
                 :list="toList"
                 :length="fromToMaxLength"
                 :highlight="(key,idx)=>idx===item.nextIndex+1"
-                highlight-color="green"
+                highlight-color="blue"
                 :highlight2="(key,idx)=>idx>=item.i&&idx<=item.e2"
-                highlight2-color="red"
+                highlight2-color="chocolate"
+              ></list-bar>
+              <mark-bar
+                label="nextIndex"
+                :length="fromToMaxLength"
+                :mark="(n)=>item.nextIndex+1===n-2"
+                :mark2="(n)=>item.nextIndex===n-2"
+                marker="←"
+                marker2="↑"
+              ></mark-bar>
+              <dom-bar
+                :length="fromToMaxLength"
+                :container="item.container"
+                :highlight3="(n)=>toList[item.nextIndex]===item.container[n-1] && item.increasingNewIndexSequence.includes(item.nextIndex - item.i)&&item.nextIndex - item.i>0"
+                highlight3-color="darkturquoise"
+                :highlight2="(n)=>toList[item.nextIndex+1]===item.container[n-1]"
+                highlight2-color="blue"
+                :highlight3="(n)=>toList[item.nextIndex]===item.container[n-1]"
+                highlight3-color="green"
+              ></dom-bar>
+            </template>
+            <template v-else-if="item.type==='anchorMount'">
+              <header>插入新增元素</header>
+              <index-bar :length="fromToMaxLength"></index-bar>
+              <list-bar
+                label="to"
+                :list="toList"
+                :length="fromToMaxLength"
+                :highlight="(key,idx)=>toList[item.nextIndex]===key"
+                highlight-color="green"
+                :highlight2="(key,idx)=>idx===item.nextIndex+1"
+                highlight2-color="blue"
+                :highlight3="(key,idx)=>idx>=item.i&&idx<=item.e2"
+                highlight3-color="chocolate"
               ></list-bar>
               <mark-bar
                 label="nextIndex"
@@ -441,33 +506,40 @@
                 :length="fromToMaxLength"
                 :container="item.container"
                 :highlight="(n)=>toList[item.nextIndex+1]===item.container[n-1]"
-                highlight-color="green"
+                highlight-color="blue"
                 :highlight2="(n)=>toList[item.nextIndex]===item.container[n-1]"
-                highlight2-color="red"
-              ></dom-bar>
-            </template>
-            <template v-else-if="item.type==='anchorMount'">
-              <header>插入新增元素</header>
-              <index-bar :length="fromToMaxLength"></index-bar>
-              <dom-bar
-                :length="fromToMaxLength"
-                :container="item.container"
-                :highlight="(n)=>toList[item.nextIndex+1]===item.container[n-1]"
-                highlight-color="green"
-                :highlight2="(n)=>toList[item.nextIndex]===item.container[n-1]"
-                highlight2-color="red"
+                highlight2-color="green"
               ></dom-bar>
             </template>
             <template v-else-if="item.type==='anchorMove'">
               <header>移动元素</header>
               <index-bar :length="fromToMaxLength"></index-bar>
+              <list-bar
+                label="to"
+                :list="toList"
+                :length="fromToMaxLength"
+                :highlight="(key,idx)=>toList[item.nextIndex]===key"
+                highlight-color="green"
+                :highlight2="(key,idx)=>idx===item.nextIndex+1"
+                highlight2-color="blue"
+                :highlight3="(key,idx)=>idx>=item.i&&idx<=item.e2"
+                highlight3-color="chocolate"
+              ></list-bar>
+              <mark-bar
+                label="nextIndex"
+                :length="fromToMaxLength"
+                :mark="(n)=>item.nextIndex+1===n-2"
+                :mark2="(n)=>item.nextIndex===n-2"
+                marker="←"
+                marker2="↑"
+              ></mark-bar>
               <dom-bar
                 :length="fromToMaxLength"
                 :container="item.container"
                 :highlight="(n)=>toList[item.nextIndex+1]===item.container[n-1]"
-                highlight-color="green"
+                highlight-color="blue"
                 :highlight2="(n)=>toList[item.nextIndex]===item.container[n-1]"
-                highlight2-color="red"
+                highlight2-color="green"
               ></dom-bar>
             </template>
           </section>
@@ -475,7 +547,7 @@
       </div>
     </div>
     <span class="star">Star me!</span>
-    <a class="github" href="https://github.com/xachary/vue3-diff-study">
+    <a class="github" href="https://github.com/xachary/vue3-core-study">
       <svg width="98" height="96" xmlns="http://www.w3.org/2000/svg">
         <path
           fill-rule="evenodd"
@@ -513,7 +585,7 @@
           <div>
             <label>{{label}}:</label>
             <ul>
-              <li v-for="n in (length+1)" :key="n">
+              <li v-for="n in (length+1)" :key="n" :style="{background:mark&&mark(n)?markColor:mark2&&mark2(n)?mark2Color:''}">
                 {{mark&&mark(n)?marker:mark2&&mark2(n)?marker2:''}}
               </li>
             </ul>
@@ -526,6 +598,8 @@
           mark2: Function,
           marker: String,
           marker2: String,
+          markColor: String,
+          mark2Color: String,
         },
         setup() {
           //
@@ -538,7 +612,7 @@
             <label>{{label}}:</label>
             <ul>
               <li></li>
-              <li v-for="(key,idx) in list" :key="idx" :style="{'color':highlight&&highlight(key,idx)?highlightColor:highlight2&&highlight2(key,idx)?highlight2Color:''}">{{key}}</li>
+              <li v-for="(key,idx) in list" :key="idx" :style="highlightStyle(key,idx)">{{key}}</li>
               <li
                 v-for="n in (length - list.length)"
                 :key="n"
@@ -553,11 +627,25 @@
           highlightColor: String,
           highlight2: Function,
           highlight2Color: String,
+          highlight3: Function,
+          highlight3Color: String,
           label: String,
           list: Array,
         },
-        setup() {
-          //
+        setup(props) {
+          return {
+            highlightStyle: (key, idx) => {
+              const color =
+                props.highlight && props.highlight(key, idx)
+                  ? props.highlightColor
+                  : props.highlight2 && props.highlight2(key, idx)
+                    ? props.highlight2Color
+                    : props.highlight3 && props.highlight3(key, idx)
+                      ? props.highlight3Color
+                      : ''
+              return { background: color, color: color ? '#fff' : '' }
+            },
+          }
         },
       }
 
@@ -566,7 +654,7 @@
           <div>
             <label>dom:</label>
             <ul>
-              <li v-for="n in (length+1)" :key="n" :style="{'color':highlight&&highlight(n)?highlightColor:highlight2&&highlight2(n)?highlight2Color:''}">
+              <li v-for="n in (length+1)" :key="n" :style="highlightStyle(n)">
                 {{n-1>-1?container[n-1]:''}}
               </li>
             </ul>
@@ -578,10 +666,27 @@
           highlightColor: String,
           highlight2: Function,
           highlight2Color: String,
+          highlight3: Function,
+          highlight3Color: String,
           container: Array,
         },
-        setup() {
-          //
+        setup(props) {
+          return {
+            highlightStyle: n => {
+              const color =
+                props.container[n - 1] && props.highlight && props.highlight(n)
+                  ? props.highlightColor
+                  : props.highlight2 && props.highlight2(n)
+                    ? props.highlight2Color
+                    : props.highlight3 && props.highlight3(n)
+                      ? props.highlight3Color
+                      : ''
+              return {
+                background: color,
+                color: color ? '#fff' : '',
+              }
+            },
+          }
         },
       }
 
