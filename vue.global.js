@@ -7829,7 +7829,7 @@ Server rendered element contains fewer child nodes than client vdom.`
       }) => {
         if (container.classList.contains("done")) {
           globalThis.dispatchEvent(
-            new CustomEvent("message", {
+            new CustomEvent("vue3_study_message", {
               detail: {
                 scope,
                 type,
