@@ -794,7 +794,7 @@
             currentTarget.scrollIntoViewIfNeeded()
           }
 
-          window.addEventListener('message', ({ detail }) => {
+          window.addEventListener('vue3_study_message', ({ detail }) => {
             if (active) {
               console.log(detail)
               logs.value.push(detail)
